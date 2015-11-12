@@ -92,9 +92,8 @@ create table JournalCopy(
 	PostalCode number(5),
 	Num number(2),
 	NMember number null,
-
-	create index ISBN_PostalCode on (ISBN, PostalCode), /* ??? */
-	foreign key(ISBN_PostalCode) references Subscription,
+	
+	foreign key(ISBN, PostalCode) references Subscription,
 	foreign key(NMember) references Member,
-	constraint ISBN_PC_Num_PK primary key(ISBN_PostalCode, Num) /* ???: key(ISBN, PostalCode, Num) */
+	constraint ISBN_PC_Num_PK primary key(ISBN, PostalCode, Num) /* ???: key(ISBN, PostalCode, Num) */
 );
