@@ -29,11 +29,15 @@ from Client join Orders on /* La sintaxis del join hace que tengas que poner no 
 Client.IdClient=Orders.IdClient;
 
 /* Exercise 4 */
-
+/*
 Select *
-from client, books_order where
+from client join books_order on
 books_order.isbn=4554672899910;
-
+*/
 Select *
-from client natural join books_order where
-books_order.isbn=4554672899910;
+from client natural join orders natural join books_order
+where books_order.isbn=4554672899910;
+
+/*  Select * from client join orders on clients.idclient= orders.idclient join books_order on */
+
+
