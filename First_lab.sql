@@ -8,7 +8,7 @@ drop table Member cascade constraints;
 drop table BookCopy cascade constraints;
 drop table Journal cascade constraints;
 drop table JournalCopy cascade constraints;
-drop table Subscription cascade constraints;
+drop table Subscription cascade constraints; 
 
 create table Publisher(
 	Name varchar(28) PRIMARY KEY NOT NULL, 
@@ -81,10 +81,9 @@ create table Subscription(
 	ISBN varchar(13),
 	PC number(5),
 	Sub_Date date NULL,
-
 	foreign key(ISBN) references Journal,
 	foreign key(PC) references Biblioteca,
-	contraint ISBN_PK primary key(ISBN, PC)
+	constraint ISBN_PK primary key(ISBN, PC)
 );
 
 create table JournalCopy(
