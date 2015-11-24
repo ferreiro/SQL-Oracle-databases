@@ -40,4 +40,15 @@ where books_order.isbn=4554672899910;
 
 /*  Select * from client join orders on clients.idclient= orders.idclient join books_order on */
 
+/* Exercise 5 */
+/* List of clients whose name contains ‘Jo’ and the books that they have bought. */
+/*
+Select distinct Client.name, book.title
+from Client, book
+where Client.name like '%Jo%';
+*/
+
+/* Exercise 6 */
+/* List of clients that have bought at least a book whose price is greater than 10€ */
+
 
