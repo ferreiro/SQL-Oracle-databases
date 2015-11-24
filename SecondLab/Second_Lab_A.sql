@@ -43,8 +43,8 @@ where books_order.isbn=4554672899910;
 /* Exercise 5 */
 /* List of clients whose name contains ‘Jo’ and the books that they have bought. */
 
-Select distinct Client.IdClient, Book.Title from Client, Orders, Books_Order, Book
-where Client.name like '%Jo%' and Orders.IdOrder=Books_Order.IdOrder; 
+Select * from Client natural join Orders natural join Books_Order natural join Book
+on orders.idorder=books_order.idorder and books_order.isbn=book.isbn;
 /*Select distinct Client.name, book.title
 from Client, book
 where Client.name like '%Jo%'; 
@@ -53,9 +53,7 @@ where Client.name like '%Jo%';
 
 /* Exercise 6 */
 /* List of clients that have bought at least a book whose price is greater than 10€ */
-
-Select Client.Name 
-
+/*
 Select Client.Name (Select * from Orders natural join Books_Order
 where Books_Order.IdOrder=Orders.IdOrder and Books_Order.amount > 10)
-
+*/
