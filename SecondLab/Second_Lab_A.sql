@@ -75,8 +75,11 @@ where DateExped IS NULL;
 
 /* 9. List of clients that have not bought books whose price is greater than 10€.*/ 
 
-Select * 
-from Client natural join Orders;
+Select distinct idclient, name 
+from Client natural join Orders
+            natural join Books_order
+            natural join book
+where saleprice<10;
 
 /* 10. List of books whose sale price is greater than 30€ or that were published before 2000.*/ 
 /* 11. List of books and amount of copies of each of them that have been sold.*/ 
