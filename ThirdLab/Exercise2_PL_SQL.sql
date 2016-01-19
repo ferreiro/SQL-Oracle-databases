@@ -1,3 +1,20 @@
+CREATE TABLE Contracts(Ref  VARCHAR(10) PRIMARY KEY,
+                       Organization      VARCHAR(100),
+                       ContDate        DATE,
+                       NumRoutes NUMBER(2,0));
+
+CREATE TABLE Routes(Ref VARCHAR(10) REFERENCES Contracts ON DELETE CASCADE,
+                      Origin     	  VARCHAR(50),
+                      Destination    VARCHAR(50),
+                      Vehicle        VARCHAR(20),
+                      PRIMARY KEY (Ref, Origin, Destination));
+                            
+/*insert into Routes values ('0123456789', 'Lisboa', 'oporto', 'mercedes');  */                         
+/*insert into Routes values ('0123456789', 'Lisboa', 'Madrid', 'mercedes');  */                          
+/*DELETE FROM Routes
+WHERE Ref='0123456789' && Origin='Lisboa' && Destination='Madrid' && Vehicle='mercedes';*/
+
+/* Creating a procedure */
 create or replace 
 PROCEDURE myContractProcedure
 (ReferenceContract IN VARCHAR)
@@ -41,3 +58,23 @@ BEGIN
     WHEN NO_DATA_FOUND then
         DBMS_OUTPUT.PUT_LINE('Reference does not exist.');
 END;
+
+
+/* Creating a trigger */
+CREATE OR REPLACE TRIGGER organizationTrigger
+AFTER INSERT OR DELETE OR UPDATE ON Routes
+for each row
+
+BEGIN
+    
+    IF DELETING THEN
+        UPDATE Contracts
+        SET NumRoutes = NumRoutes-1
+        WHERE Contracts.Ref=:old.Ref;
+    ELSIF INSERTING THEN
+        UPDATE Contracts
+        SET NumRoutes = NumRoutes+1
+        WHERE Contracts.Ref=:new.Ref;
+    END IF;  
+    
+END;  
