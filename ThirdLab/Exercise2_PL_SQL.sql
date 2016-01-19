@@ -1,14 +1,3 @@
-CREATE TABLE Contracts(Ref  VARCHAR(10) PRIMARY KEY,
-                       Organization      VARCHAR(100),
-                       ContDate        DATE,
-                       NumRoutes NUMBER(2,0));
-
-CREATE TABLE Routes(Ref VARCHAR(10) REFERENCES Contracts ON DELETE CASCADE,
-                      Origin     	  VARCHAR(50),
-                      Destination    VARCHAR(50),
-                      Vehicle        VARCHAR(20),
-                      PRIMARY KEY (Ref, Origin, Destination));
-
 create or replace 
 PROCEDURE myContractProcedure
 (ReferenceContract IN VARCHAR)
@@ -20,7 +9,10 @@ IS
     
 BEGIN
   
-    /* Print organization name */ 
+    /* Print organization name */
+    /* Cuando no exista la referencia que te pasan por parámetro, esto
+      va a lanzar una excepción de no_Data_found, porque te lanzará NULL
+    */
     SELECT Contracts.Organization INTO v_organizationName
     FROM Contracts
     WHERE Contracts.REF=ReferenceContract;
@@ -46,4 +38,6 @@ BEGIN
     EXCEPTION
     WHEN noRoutes then
        DBMS_OUTPUT.PUT_LINE('No routes for this reference');
+    WHEN NO_DATA_FOUND then
+        DBMS_OUTPUT.PUT_LINE('Reference does not exist.');
 END;
