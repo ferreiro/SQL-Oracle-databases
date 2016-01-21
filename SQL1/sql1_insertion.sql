@@ -1,8 +1,12 @@
+CREATE SEQUENCE ThemesID
+INCREMENT 1
+STARTS WITH 0;
+
 /********************************************/
 -- Themes: IdTheme, Description */ 
-INSERT INTO Theme VALUES(0, 'Amazing theme');
-INSERT INTO Theme VALUES(1, 'Amazing theme 2');
-INSERT INTO Theme VALUES(2, 'Amazing theme 3');
+INSERT INTO Theme VALUES(ThemesID.CURRVAL, 'Amazing theme');
+INSERT INTO Theme VALUES(ThemesID.NEXTVAL, 'Amazing theme 2');
+INSERT INTO Theme VALUES(ThemesID.NEXTVAL, 'Amazing theme 3');
 
 -- Publishers: Name, Address, Phone */
 INSERT INTO Publisher VALUES('McGrah', 'Sol 20', 600400330);
