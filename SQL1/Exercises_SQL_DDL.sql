@@ -24,13 +24,16 @@ CREATE TABLE Theme (
   Description VARCHAR(100),
   CONSTRAINT TME_PK PRIMARY KEY(IdTheme)
 ); 
+
 CREATE TABLE Clasification(
   ISBN VARCHAR(13),
   IDTheme NUMBER,
   
   CONSTRAINT CLA_PK PRIMARY KEY(ISBN, IDTheme),
-  CONSTRAINT CLA_FK FOREIGN KEY(IDTheme) REFERENCES Theme
+  CONSTRAINT CLA_FK_ISBN FOREIGN KEY(ISBN) REFERENCES Publication,
+  CONSTRAINT CLA_FK_Theme FOREIGN KEY(IDTheme) REFERENCES Theme
 );
+
 CREATE TABLE Publisher(
   Name VARCHAR(20),
   Address VARCHAR(30),
@@ -38,6 +41,7 @@ CREATE TABLE Publisher(
   
   CONSTRAINT pus_PK PRIMARY KEY(Name)
 );
+
 CREATE TABLE Publication(
   ISBN VARCHAR(13),
   Title varchar(30),
@@ -48,6 +52,10 @@ CREATE TABLE Publication(
   CONSTRAINT pub_FK FOREIGN KEY(NPublisher) REFERENCES Publisher 
 );
 
+/*
+ * Library System
+ */
+
 CREATE TABLE Book(
   ISBN VARCHAR(13),
   edition NUMBER(1),
@@ -56,11 +64,13 @@ CREATE TABLE Book(
   CONSTRAINT boo_PK PRIMARY KEY(ISBN),
   CONSTRAINT boo_FK FOREIGN KEY(ISBN) REFERENCES Publication
 );
+
 CREATE TABLE Biblioteca(
   potal_Code NUMBER(5),
   
   CONSTRAINT bib_PK PRIMARY KEY(potal_Code)
 );
+
 CREATE TABLE Journal (
   ISBN VARCHAR(13), 
   Frecuency VARCHAR(10),
@@ -68,6 +78,7 @@ CREATE TABLE Journal (
   CONSTRAINT jou_pk PRIMARY KEY(ISBN),
   CONSTRAINT jou_fk FOREIGN KEY(ISBN) REFERENCES Publication
 );
+
 CREATE TABLE Subscription(
   ISBN VARCHAR(13), 
   PC NUMBER(5), 
@@ -77,6 +88,7 @@ CREATE TABLE Subscription(
   CONSTRAINT sub_fk_isbn FOREIGN KEY(ISBN) REFERENCES Journal,
   CONSTRAINT sub_fk_pc FOREIGN KEY(PC) REFERENCES Biblioteca
 );
+
 CREATE TABLE Member (
   NMember NUMBER, 
   name VARCHAR(20), 
@@ -86,6 +98,7 @@ CREATE TABLE Member (
   CONSTRAINT mem_pk_nm PRIMARY KEY(NMember),
   CONSTRAINT mem_fk_pc FOREIGN KEY(Postal_Code) REFERENCES Biblioteca
 );
+
 CREATE TABLE JournalCopy(
   ISBN VARCHAR(13), 
   PostalCode NUMBER(5),
@@ -96,6 +109,7 @@ CREATE TABLE JournalCopy(
   CONSTRAINT jou_fk_ISBNPc FOREIGN KEY(ISBN, PostalCode) REFERENCES Subscription,
   CONSTRAINT jou_fk_NMember FOREIGN KEY(NMember) REFERENCES Member
 );
+
 CREATE TABLE BookCopy(
   ISBN VARCHAR(13), 
   PC NUMBER(5),
@@ -107,4 +121,3 @@ CREATE TABLE BookCopy(
   CONSTRAINT bookCopy_pk_ISBNPc PRIMARY KEY(ISBN, PC),
   CONSTRAINT bookCopy_fk_NMember FOREIGN KEY(NMember) REFERENCES Member
 );
-
