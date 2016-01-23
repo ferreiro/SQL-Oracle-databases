@@ -67,7 +67,7 @@ SELECT TITLE, ISBN, SUM(AMOUNT)
 FROM BOOKS_ORDER NATURAL JOIN BOOK
 GROUP BY TITLE, ISBN
 ORDER BY SUM(AMOUNT) DESC;
-
+ 
 -- 12. List of clients and the total amount that they have spent in the bookstore. 
 
 SELECT IDCLIENT, NAME, SUM(AMOUNT*SALEPRICE) "Total"
@@ -76,8 +76,73 @@ GROUP BY IDCLIENT, NAME;
 
 -- 13. Profits obtained from sales of books. 
 
-/*
+/*  
 SELECT SUM(AMOUNT*(SALEPRICE-PURCHASEPRICE)) "TOTAL"
 FROM CLIENT NATURAL JOIN ORDERS NATURAL JOIN BOOKS_ORDER NATURAL JOIN BOOK
 GROUP BY AMOUNT;
 */
+
+-- 14. Total amount of each order (ordered by date) that  
+-- have been placed after 01/12/2011 and have not been sent yet. 
+
+SELECT TO_CHAR(DATEORDER, 'DD MONTH YYYY') "Date", SUM(AMOUNT*SALEPRICE) "Total"
+FROM ORDERS NATURAL JOIN BOOKS_ORDER NATURAL JOIN BOOK
+WHERE DATEORDER>='1/12/2011' AND DATEEXPED IS NULL
+GROUP BY DATEORDER
+ORDER BY DATEORDER ASC;
+
+-- 15. Detail of orders (Order number, client name, title, total amount, unit price and total). 
+
+SELECT IDORDER, IDCLIENT, TITLE, AMOUNT, SALEPRICE "Unit Price", SUM(AMOUNT*SALEPRICE) "Total" 
+FROM ORDERS NATURAL JOIN BOOKS_ORDER NATURAL JOIN BOOK
+GROUP BY IDORDER, IDCLIENT, TITLE, AMOUNT, SALEPRICE
+ORDER BY IDORDER ASC;
+
+-- 16.  Orders whose total amount is greater than 100€. 
+
+SELECT IDORDER, SUM(AMOUNT*SALEPRICE) "TOTAL"
+FROM BOOKS_ORDER NATURAL JOIN BOOK
+GROUP BY IDORDER
+HAVING SUM(AMOUNT*SALEPRICE)>100
+ORDER BY IDORDER;
+
+
+-- 17. Orders and the total amount of each of them that contains more than a book (title). 
+
+SELECT IDORDER, SUM(AMOUNT*SALEPRICE) "TOTAL"
+FROM BOOKS_ORDER NATURAL JOIN BOOK
+GROUP BY IDORDER
+HAVING COUNT(TITLE)>1;
+
+-- 18. Orders and the total amount of each of them that contains more than 4 copies
+
+SELECT IDORDER, SUM(AMOUNT*SALEPRICE) "Total"
+FROM BOOKS_ORDER NATURAL JOIN BOOK 
+WHERE AMOUNT>4
+GROUP BY IDORDER;
+
+-- 19. List of the most expensive books. 
+
+SELECT ISBN, TITLE, SALEPRICE
+FROM BOOK
+WHERE SALEPRICE IN (SELECT MAX(SALEPRICE) FROM BOOK);
+
+-- 20. List of books that have not been sold or that have been sold but the profit per copy is less than 5€.   
+
+SELECT ISBN, TITLE
+FROM BOOK
+WHERE(SALEPRICE-PURCHASEPRICE)<5 OR ISBN NOT IN(
+  SELECT DISTINCT ISBN FROM BOOKS_ORDER
+);
+
+-- 21. List of clients that have bought more than one copy of a book sometime
+
+SELECT IDCLIENT, NAME
+FROM CLIENT NATURAL JOIN ORDERS
+WHERE IDORDER IN (
+  SELECT IDORDER
+  FROM BOOKS_ORDER
+  GROUP BY IDORDER
+  HAVING COUNT(AMOUNT) > 1
+);
+
