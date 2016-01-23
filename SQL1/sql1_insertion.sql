@@ -1,12 +1,14 @@
-CREATE SEQUENCE ThemesID
-INCREMENT 1
-STARTS WITH 0;
+CREATE SEQUENCE ThemesID_Sequence
+MINVALUE 0
+START WITH 0
+INCREMENT BY +1
+NOCACHE;
 
 /********************************************/
 -- Themes: IdTheme, Description */ 
-INSERT INTO Theme VALUES(ThemesID.CURRVAL, 'Amazing theme');
-INSERT INTO Theme VALUES(ThemesID.NEXTVAL, 'Amazing theme 2');
-INSERT INTO Theme VALUES(ThemesID.NEXTVAL, 'Amazing theme 3');
+INSERT INTO Theme VALUES(ThemesID_Sequence.NEXTVAL, 'Amazing theme');
+INSERT INTO Theme VALUES(ThemesID_Sequence.NEXTVAL, 'Amazing theme 2');
+INSERT INTO Theme VALUES(ThemesID_Sequence.NEXTVAL, 'Amazing theme 3');
 
 -- Publishers: Name, Address, Phone */
 INSERT INTO Publisher VALUES('McGrah', 'Sol 20', 600400330);
@@ -18,3 +20,4 @@ INSERT INTO Publication VALUES('B232', 'Pull and bear', 'English', 'McGrah');
 -- Clasifications: ISBN and ThemeID */
 INSERT INTO Clasification VALUES('A232', 0);
 INSERT INTO Clasification VALUES('B232', 1); 
+INSERT INTO Clasification VALUES('B232', 2); 
