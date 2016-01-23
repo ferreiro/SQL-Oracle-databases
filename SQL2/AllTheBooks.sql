@@ -53,7 +53,7 @@ insert into Client values ('0000006','Betty Fraser', 'Whitehall 32', '2444889890
 
 
 insert into Orders values ('0000001P','0000001', TO_DATE('01/12/2011'),TO_DATE('03/12/2011'));
-insert into ORDERS values ('0000002P','0000001', TO_DATE('01/12/2011'),null);
+insert into Orders values ('0000002P','0000001', TO_DATE('01/12/2011'),null);
 insert into Orders values ('0000003P','0000002', TO_DATE('02/12/2011'),TO_DATE('03/12/2011'));
 insert into Orders values ('0000004P','0000004', TO_DATE('02/12/2011'),TO_DATE('05/12/2011'));
 insert into Orders values ('0000005P','0000005', TO_DATE('03/12/2011'),TO_DATE('03/12/2011'));
