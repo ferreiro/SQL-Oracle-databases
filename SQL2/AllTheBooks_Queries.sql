@@ -41,3 +41,43 @@ WHERE IDCLIENT=(
   GROUP BY(IDCLIENT,DATEORDER)
   HAVING COUNT(DATEORDER)>1
 );
+
+-- 8. List of clients and dates in which they have placed orders that have not been sent yet. 
+SELECT IDCLIENT, NAME, DATEORDER
+FROM CLIENT NATURAL JOIN ORDERS
+WHERE DATEEXPED IS NULL;
+
+-- 9. List of clients that have not bought books whose price is greater than 10€
+
+SELECT DISTINCT IDCLIENT, NAME
+FROM CLIENT
+WHERE IDCLIENT NOT IN (
+  SELECT IDCLIENT
+  FROM ORDERS NATURAL JOIN BOOKS_ORDER NATURAL JOIN BOOK
+  WHERE SALEPRICE < 10
+);
+
+-- 10. List of books whose sale price is greater than 30€ or that were published before 2000. 
+SELECT TITLE, AÑO, SALEPRICE
+FROM BOOK
+WHERE AÑO<'2000' OR SALEPRICE>30;
+
+-- 11. List of books and amount of copies of each of them that have been sold. 
+SELECT TITLE, ISBN, SUM(AMOUNT)
+FROM BOOKS_ORDER NATURAL JOIN BOOK
+GROUP BY TITLE, ISBN
+ORDER BY SUM(AMOUNT) DESC;
+
+-- 12. List of clients and the total amount that they have spent in the bookstore. 
+
+SELECT IDCLIENT, NAME, SUM(AMOUNT*SALEPRICE) "Total"
+FROM CLIENT NATURAL JOIN ORDERS NATURAL JOIN BOOKS_ORDER NATURAL JOIN BOOK
+GROUP BY IDCLIENT, NAME;
+
+-- 13. Profits obtained from sales of books. 
+
+/*
+SELECT SUM(AMOUNT*(SALEPRICE-PURCHASEPRICE)) "TOTAL"
+FROM CLIENT NATURAL JOIN ORDERS NATURAL JOIN BOOKS_ORDER NATURAL JOIN BOOK
+GROUP BY AMOUNT;
+*/
