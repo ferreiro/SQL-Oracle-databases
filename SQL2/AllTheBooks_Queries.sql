@@ -103,7 +103,6 @@ GROUP BY IDORDER
 HAVING SUM(AMOUNT*SALEPRICE)>100
 ORDER BY IDORDER;
 
-
 -- 17. Orders and the total amount of each of them that contains more than a book (title). 
 
 SELECT IDORDER, SUM(AMOUNT*SALEPRICE) "TOTAL"
