@@ -37,7 +37,7 @@ ORDER BY EMPLOYEE.EID ASC;
 SELECT EID, NAME
 FROM EMPLOYEE
 WHERE SALARY=(SELECT MAX(SALARY) FROM EMPLOYEE);
-
+  
 -- 5. List of employees that have the highest number of certificates. 
 
 SELECT EID, COUNT(AID)
@@ -62,7 +62,7 @@ HAVING COUNT(AID)>=3;
     HAVING COUNT(AID)>=3
   );
   
--- 7. List of names of the aircrafts such that all the pilots that can pilot them  have a salary greater than 80.000€. 
+-- 8. List of names of the aircrafts such that all the pilots that can pilot them  have a salary greater than 80.000€. 
 /*
 SELECT DISTINCT NAME, AID
 FROM CERTIFICATE NATURAL JOIN AIRCRAFT
@@ -74,3 +74,9 @@ WHERE EMPLOYEE.EID=CERTIFICATE.EID AND CERTIFICATE.AID=AIRCRAFT.AID AND
       EMPLOYEE.SALARY>=80000;
 */
 
+-- 9. For each pilot that can pilot more than 3 aircrafts, show the code of the pilot and the distance that these aircrafts can cover.
+
+SELECT EID, MAX(DISTANCE)
+FROM CERTIFICATE NATURAL JOIN AIRCRAFT
+GROUP BY EID
+HAVING COUNT(AID)>3;
