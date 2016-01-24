@@ -62,7 +62,7 @@ HAVING COUNT(AID)>=3;
     HAVING COUNT(AID)>=3
   );
   
--- 8. List of names of the aircrafts such that all the pilots that can pilot them  have a salary greater than 80.000€. 
+-- 7. List of names of the aircrafts such that all the pilots that can pilot them  have a salary greater than 80.000€. 
 /*
 SELECT DISTINCT NAME, AID
 FROM CERTIFICATE NATURAL JOIN AIRCRAFT
@@ -74,9 +74,41 @@ WHERE EMPLOYEE.EID=CERTIFICATE.EID AND CERTIFICATE.AID=AIRCRAFT.AID AND
       EMPLOYEE.SALARY>=80000;
 */
 
--- 9. For each pilot that can pilot more than 3 aircrafts, show the code of the pilot and the distance that these aircrafts can cover.
+-- 8. For each pilot that can pilot more than 3 aircrafts, show the code of the pilot and the distance that these aircrafts can cover.
 
 SELECT EID, MAX(DISTANCE)
 FROM CERTIFICATE NATURAL JOIN AIRCRAFT
 GROUP BY EID
 HAVING COUNT(AID)>3;
+
+-- 9. List the names of the pilots whose salary is less than the cheaper flight from Los Angeles to Honolulu. 
+
+SELECT NAME
+FROM EMPLOYEE
+WHERE SALARY <(
+  SELECT MIN(PRICE)
+  FROM FLIGHT
+  WHERE ORIGIN='Los Angeles' AND DESTINATION='Honolulu'
+) AND EID IN (SELECT DISTINCT EID FROM CERTIFICATE);
+
+-- 10. Show the difference  of the avarage salary of all the employees (pilots included) and the average salary of the pilots. 
+/*
+BAD
+SELECT AVG(SALARY) - AVG(
+  SELECT SALARY
+  FROM EMPLOYEE
+  WHERE EID IN (SELECT DISTINCT EID FROM CERTIFICATE)
+)
+FROM EMPLOYEE;
+*/
+-- 11. List of the names and salaries of the employees (no pilots) whose salary is greater than the average salary of the pilots. 
+
+SELECT NAME, SALARY
+FROM EMPLOYEE
+WHERE EID NOT IN (SELECT DISTINCT EID FROM CERTIFICATE)
+      AND SALARY>(
+          SELECT AVG(SALARY) 
+          FROM EMPLOYEE 
+          WHERE EID IN (SELECT DISTINCT EID FROM CERTIFICATE
+      )
+);
