@@ -26,11 +26,12 @@ INSERT INTO Departments VALUES('3', 'Department 3');
 INSERT INTO Employees VALUES('123456789', 'PACO', '1', 2000);
 INSERT INTO Employees VALUES('123455789', 'Luis', '1', 0);
 INSERT INTO Employees VALUES('123455789', 'Luis', '1', 1000);
+INSERT INTO Employees VALUES('013455789', 'Sara', '2', 1000);
+INSERT INTO Employees VALUES('023455789', 'Pularda', '2', 3000);
 
 UPDATE Employees
 SET SALARY=2000
 WHERE SSN='123456789';
-
 
 /*
   Write a trigger that records in the table Changes any update of the salary of the employees. 
@@ -44,3 +45,39 @@ for each row
 begin
   INSERT INTO Changes values (CHANGEID.NEXTVAL, USER(), :OLD.Salary, :NEW.Salary);
 end;
+
+/* 
+Write a stored procedure that lists for each department the name and salary of each employee whose salary is lower than the average of the department. 
+For each department the procedure must show the total amount of these salaries by department.
+*/
+create or replace PROCEDURE MY_SALARIESPROC
+IS
+
+  CURSOR cursorDeparment is
+  SELECT Name, SALARY
+  FROM EMPLOYEES E
+  WHERE SALARY<(
+    SELECT AVG(SALARY) 
+    FROM EMPLOYEES
+    WHERE CodDept=E.CodDept
+    GROUP BY (CodDept)
+  );
+  
+  AUX NUMBER:=0;
+  v_name VARCHAR(100);
+  
+  rEmployee cursorDeparment%ROWTYPE;
+
+BEGIN
+
+  OPEN cursorDeparment;
+   
+  LOOP
+    FETCH cursorDeparment into rEmployee;
+    EXIT WHEN cursorDeparment%NOTFOUND;
+      dbms_output.put_line(rEmployee.Name || ', ' || rEmployee.Salary);
+  END LOOP;
+  
+  CLOSE CursorDeparment;
+  
+END;
