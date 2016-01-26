@@ -1,0 +1,14 @@
+Following you can find an example that you can follow to print headers and data in the PL/SQL blocks 
+
+You can declare a variable for using a tabular character
+
+TB constant varchar2(1):=CHR(9); 
+
+You can find the functionality of the functions rpad(string,lenght,character)and lpad(string,lenght,character) in the slides.
+
+dbms_output.put_line(lpad('Numb',8,' ')||TB||rpad('Title',60,' ')||TB||lpad('Mark',12,' '));
+dbms_output.put_line(rpad('-',85,'-'));
+It prints
+
+   Numb	Title                                                       	        Mark
+----------------------------------------------------------------------------------------
