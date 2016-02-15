@@ -17,6 +17,10 @@ WHERE AÑO<'2000';
 SELECT DISTINCT IDCLIENT, NAME
 FROM CLIENT NATURAL JOIN ORDERS;
 
+select distinct client.name, Client.IdClient
+from Client, Orders where
+Client.IdClient=Orders.IdClient;
+
 -- 4. List of clients that bought the book whose ISBN= 4554672899910. 
 SELECT IDCLIENT, NAME
 FROM CLIENT NATURAL JOIN ORDERS NATURAL JOIN BOOKS_ORDER
